@@ -39,3 +39,6 @@ Clone this repo:
 git clone https://github.com/Vanshvala23/WebScrap.git
 cd bash-web-scraper
 chmod +x Scrap.sh
+```
+## Future Expansion
+In future this project would be shared with an android app called "SiteSniffer" but its under development.
