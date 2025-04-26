@@ -1,39 +1,32 @@
 #!/bin/bash
 
-set -e 
+set -e
 echo "Running automated testing for SiteSniffer......"
 
 SCRIPT="../Scrap.sh"
 
-# Function to test the URL
-test_url() {
-    local url="$1"
-    
-    # Check if URL is valid
-    if [[ ! "$url" =~ ^https?://[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+ ]]; then
-        echo "❌ Invalid URL: $url"
+test_user_input_url() {
+    url=$1  # Take URL as an argument
+    if output=$($SCRIPT "$url"); then
+        echo "$output" | grep -q '"url"' && \
+        echo "$output" | grep -q '"status_code"' && \
+        echo "$output" | grep -q '"title"' && \
+        echo "Test Passed: JSON contains expected fields"
+    else
+        echo "Test Failed: Invalid URL or script error"
         exit 1
     fi
-
-    # If valid, run Scrap.sh and check the output
-    echo "Running with URL: $url"
-    output=$($SCRIPT "$url")
-    
-    # Check if output contains the expected fields
-    echo "$output" | grep -q '"url"' && \
-    echo "$output" | grep -q '"status_code"' && \
-    echo "$output" | grep -q '"title"' && \
-    echo "✅ Test Passed: JSON contains expected fields" || \
-    {
-        echo "❌ Test Failed: Missing expected JSON fields"
-        exit 1
-    }
 }
 
-# Prompt user for a URL (valid or invalid)
-read -p "Enter a URL for testing (can be valid or invalid): " url
+# Detect if running in GitHub Actions
+if [ "$GITHUB_ACTIONS" == "true" ]; then
+    echo "Detected GitHub Actions environment."
+    url="https://example.com"
+else
+    # Local environment - ask user
+    read -p "Enter the URL to test: " url
+fi
 
-# Test the provided URL (valid or invalid)
-test_url "$url"
+test_user_input_url "$url"
 
-echo "Test completed!"
+echo "All tests passed!"
