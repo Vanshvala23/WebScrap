@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout code
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: 🔓 Make test script executable
+    - name: Make main script executable
+      run: chmod +x Scrap.sh
+
+    - name: Make test script executable
       run: chmod +x test/test.sh
 
-    - name: 🧪 Run tests
+    - name: Run tests
       run: bash test/test.sh
