@@ -3,7 +3,7 @@
 set -e
 echo "Running automated testing for SiteSniffer......"
 
-SCRIPT="Scrap.sh"
+SCRIPT="./Scrap.sh" 
 
 test_user_input_url() {
     url=$1  # Take URL as an argument
