@@ -30,10 +30,14 @@ test_url() {
     }
 }
 
-# Prompt user for a URL (valid or invalid)
-read -p "Enter a URL for testing (can be valid or invalid): " url
+# Predefined test cases
+TEST_CASES=(
+    "https://example.com"
+    "https://invalid-url"
+)
 
-# Test the provided URL (valid or invalid)
-test_url "$url"
+for url in "${TEST_CASES[@]}"; do
+    test_url "$url"
+done
 
-echo "Test completed!"
+echo "All tests completed!"
